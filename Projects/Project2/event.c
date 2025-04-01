@@ -50,8 +50,8 @@ void event_queue_clean(EventQueue *queue) {
     EventNode *next = NULL;
 
     while (i != NULL) {
-        free(i);
         next = i->next;
+        free(i);
         i = next;
     }
 
@@ -96,7 +96,7 @@ void event_queue_push(EventQueue *queue, const Event *event) {
  * @return               Non-zero if an event was successfully popped; zero otherwise.
  */
 int event_queue_pop(EventQueue *queue, Event *event) {
-    if (queue->head == NULL) { return 0 };
+    if (queue->head == NULL) { return 0; }
     
     EventNode *pop = queue->head;
     *event = pop->event;

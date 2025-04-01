@@ -131,3 +131,6 @@ void system_array_add(SystemArray *array, System *system);
 void resource_array_init(ResourceArray *array);
 void resource_array_clean(ResourceArray *array);
 void resource_array_add(ResourceArray *array, Resource *resource);
+
+void system_thread();
+void resource_thread();

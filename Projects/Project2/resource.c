@@ -89,7 +89,7 @@ void resource_array_clean(ResourceArray *array) {
  * @param[in]     resource  Pointer to the `Resource` to add.
  */
 void resource_array_add(ResourceArray *array, Resource *resource) {
-   if (array->size == array->capacity) {
+    if (array->size == array->capacity) {
         Resource **new = malloc(array->capacity * 2);
 
         for (int i = 0; i < array->size; i++) {
@@ -99,7 +99,7 @@ void resource_array_add(ResourceArray *array, Resource *resource) {
 
         array->capacity = array->capacity * 2;
         array->resources = new;
-   }
+    }
 
     array->resources[array->size] = resource;
     array->size = array->size++;
