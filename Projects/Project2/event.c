@@ -45,19 +45,7 @@ void event_queue_init(EventQueue *queue) {
  * 
  * @param[in,out] queue  Pointer to the `EventQueue` to clean.
  */
-void event_queue_clean(EventQueue *queue) {
-    EventNode *i = queue->head;
-    EventNode *next = NULL;
-
-    while (i != NULL) {
-        free(i);
-        next = i->next;
-        i = next;
-    }
-
-    queue->head = NULL;
-    queue->size = 0;
-}
+void event_queue_clean(EventQueue *queue) {}
 
 /**
  * Pushes an `Event` onto the `EventQueue`.
@@ -67,24 +55,7 @@ void event_queue_clean(EventQueue *queue) {
  * @param[in,out] queue  Pointer to the `EventQueue`.
  * @param[in]     event  Pointer to the `Event` to push onto the queue.
  */
-void event_queue_push(EventQueue *queue, const Event *event) {
-    EventNode *new_node = malloc(sizeof(EventNode));
-    new_node->event = *event;
-    new_node->next = NULL;
-    if (queue->head == NULL || new_node->event.priority > queue->head->event.priority) {
-        new_node->next = queue->head;
-        queue->head = new_node;
-    } else {
-        EventNode *current = queue->head;
-        while (current->next != NULL && 
-               current->next->event.priority >= new_node->event.priority) {
-            current = current->next;
-        }
-        new_node->next = current->next;
-        current->next = new_node;
-    }
-    queue->size++;
-}
+void event_queue_push(EventQueue *queue, const Event *event) {}
 
 /**
  * Pops an `Event` from the `EventQueue`.
@@ -96,13 +67,7 @@ void event_queue_push(EventQueue *queue, const Event *event) {
  * @return               Non-zero if an event was successfully popped; zero otherwise.
  */
 int event_queue_pop(EventQueue *queue, Event *event) {
-    if (queue->head == NULL) { return 0 };
-    
-    EventNode *pop = queue->head;
-    *event = pop->event;
-    
-    queue->head = queue->head->next;
-    free(pop);
-    queue->size--;
-    return 1;
+    // Temporarily, this only returns 0 so that it is ignored 
+    // during early testing. Replace this with the correct logic.
+    return 0;
 }

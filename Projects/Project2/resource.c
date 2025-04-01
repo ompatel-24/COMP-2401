@@ -102,5 +102,5 @@ void resource_array_add(ResourceArray *array, Resource *resource) {
    }
 
     array->resources[array->size] = resource;
-    array->size = array->size++;
+    array->size = array->size + 1;
 }
