@@ -5,13 +5,11 @@
 #include <string.h>
 #include <pthread.h>
 
-void *system_thread(void *arg) {
+void system_thread(void* arg) {
     System *system = (System *)arg;
     while (system->status != TERMINATE) {
         system_run(system);
     }
-
-    return NULL;
 }
 
 // Helper functions just used by this C file to clean up our code
@@ -117,14 +115,12 @@ static int system_convert(System *system) {
         status = STATUS_OK;
     } else {
         // Attempt to consume the required resources
-//        sem_wait(&consumed_resource->mutex);
         if (consumed_resource->amount >= amount_consumed) {
             consumed_resource->amount -= amount_consumed;
             status = STATUS_OK;
         } else {
             status = (consumed_resource->amount == 0) ? STATUS_EMPTY : STATUS_INSUFFICIENT;
         }
-//        sem_post(&consumed_resource->mutex);
     }
 
     if (status == STATUS_OK) {
@@ -189,7 +185,6 @@ static int system_store_resources(System *system) {
         return STATUS_OK;
     }
 
-//    sem_wait(&produced_resource->mutex);
     amount_to_store = system->amount_stored;
 
     // Calculate available space
@@ -204,8 +199,6 @@ static int system_store_resources(System *system) {
         produced_resource->amount += available_space;
         system->amount_stored = amount_to_store - available_space;
     }
-
-//    sem_post(&produced_resource->mutex);
 
     if (system->amount_stored != 0) {
         return STATUS_CAPACITY;
@@ -239,8 +232,7 @@ void system_array_clean(SystemArray *array) {
     for (int i = 0; i < array->size; i++) {
         system_destroy(array->systems[i]);
     }
-    free(array->systems);
-    array->systems = NULL;
+
     array->size = 0;
     array->capacity = 0;
 }

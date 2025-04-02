@@ -6,13 +6,11 @@
 #include <time.h>
 #include <pthread.h>
 
-void *manager_thread(void *arg) {
+void manager_thread(void* arg) {
     Manager *manager = (Manager *)arg;
-    while (manager->simulation_running) {
+    while (manager->simulation_running != 0) {
         manager_run(manager);
     }
-
-    return NULL;
 }
 
 // This function is only used by this file, so declared here and set to static to avoid having it linked by any other file

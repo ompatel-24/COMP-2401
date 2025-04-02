@@ -21,7 +21,6 @@ void resource_create(Resource **resource, const char *name, int amount, int max_
     (*resource)->name = strdup(name);
     (*resource)->amount = amount;
     (*resource)->max_capacity = max_capacity;
-//    sem_init(&(*resource)->mutex, 0, 1);
 }
 	
 /**
@@ -32,7 +31,6 @@ void resource_create(Resource **resource, const char *name, int amount, int max_
  * @param[in,out] resource  Pointer to the `Resource` to be destroyed.
  */
 void resource_destroy(Resource *resource) {
-//    sem_destroy(&resource->mutex);
     free(resource->name);
     free(resource);
 }
@@ -79,9 +77,6 @@ void resource_array_clean(ResourceArray *array) {
         resource_destroy(array->resources[i]);
    }
    free(array->resources);
-   array->resources = NULL;
-   array->size = 0;
-   array->capacity = 0;
 }
 
 /**

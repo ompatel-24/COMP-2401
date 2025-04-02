@@ -11,23 +11,17 @@ int main(void) {
     manager_init(&manager);
     load_data(&manager);
 
-    pthread_t manager_thread_id;
-    pthread_create(&manager_thread_id, NULL, manager_thread, &manager);
-
-    pthread_t *system_thread_ids = malloc(manager.system_array.size * sizeof(pthread_t));
-    for (int i = 0; i < manager.system_array.size; ++i) {
-        pthread_create(&system_thread_ids[i], NULL, system_thread, manager.system_array.systems[i]);
+    while (manager.simulation_running) {
+        manager_run(&manager);
+        for (int i = 0; i < manager.system_array.size; ++i) {
+            system_run(manager.system_array.systems[i]);
+        }
     }
 
-    pthread_join(manager_thread_id, NULL);
-    for (int i = 0; i < manager.system_array.size; ++i) {
-        pthread_join(system_thread_ids[i], NULL);
-    }
-
-    free(system_thread_ids);
     manager_clean(&manager);
     return 0;
 }
+
 /**
  * Loads sample data for the simulation.
  *

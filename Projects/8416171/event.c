@@ -36,7 +36,6 @@ void event_init(Event *event, System *system, Resource *resource, int status, in
 void event_queue_init(EventQueue *queue) {
     queue->head = NULL;
     queue->size = 0;
-    sem_init(&(queue->mutex), 0, 1);
 }
 
 /**
@@ -58,7 +57,6 @@ void event_queue_clean(EventQueue *queue) {
 
     queue->head = NULL;
     queue->size = 0;
-    sem_destroy(&(queue->mutex));
 }
 
 /**
@@ -70,7 +68,6 @@ void event_queue_clean(EventQueue *queue) {
  * @param[in]     event  Pointer to the `Event` to push onto the queue.
  */
 void event_queue_push(EventQueue *queue, const Event *event) {
-    sem_wait(&(queue->mutex));
     EventNode *new_node = malloc(sizeof(EventNode));
     new_node->event = *event;
     new_node->next = NULL;
@@ -87,7 +84,6 @@ void event_queue_push(EventQueue *queue, const Event *event) {
         current->next = new_node;
     }
     queue->size++;
-    sem_post(&(queue->mutex));
 }
 
 /**
@@ -100,7 +96,6 @@ void event_queue_push(EventQueue *queue, const Event *event) {
  * @return               Non-zero if an event was successfully popped; zero otherwise.
  */
 int event_queue_pop(EventQueue *queue, Event *event) {
-    sem_wait(&(queue->mutex));
     if (queue->head == NULL) { return 0; }
     
     EventNode *pop = queue->head;
@@ -109,7 +104,5 @@ int event_queue_pop(EventQueue *queue, Event *event) {
     queue->head = queue->head->next;
     free(pop);
     queue->size--;
-    sem_post(&(queue->mutex));
-
     return 1;
 }
